@@ -1,0 +1,8 @@
+.training-data-form-field {
+    width: 60%;
+}
+
+.training-data-textarea {
+    height: 30vh;
+    /* white-space: pre-wrap; */
+}

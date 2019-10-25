@@ -1,0 +1,24 @@
+<h3>Раздел 2</h3>
+<p>
+    1. Реализуйте обучение однослойного персептрона методом наименьших 
+    квадратов  для определения объёма товарооборота за месяц,  используя следующую обучающую выборку:<br>    
+    (Месяц, Розничный товарооборот в у.е.) =
+    (Январь,534),(Февраль,465),(Март,586),
+    (Апрель,570),(Май,    654),(Июнь,618) <br>
+    В качестве приближающей функции возьмите линейную функцию y=ax+b.
+</p>
+<mat-form-field class="training-data-form-field">
+  <textarea matInput placeholder="Training data" name="training-data" [(ngModel)]="rawTrainingData" class="training-data-textarea"></textarea>
+</mat-form-field>
+<div style="margin-bottom: 1rem;"> 
+  <button mat-stroked-button (click)="do()">Apply</button>
+</div>
+<p> 
+  y = {{ a ? a : 'a' }} * x + {{ b? b : 'b' }}
+</p>
+<mat-form-field style="margin-top: 1rem;">
+    <input matInput placeholder="Signal x" [(ngModel)]="signalX">
+</mat-form-field>
+<p> 
+  output = {{ output ? output : ''}}
+</p>
