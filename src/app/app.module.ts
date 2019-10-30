@@ -9,11 +9,13 @@ import { TaskTwoOneComponent } from './components/task-two-one/task-two-one.comp
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { ErrorCorrectionComponent } from './components/error-correction/error-correction.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TaskTwoOneComponent
+    TaskTwoOneComponent,
+    ErrorCorrectionComponent
   ],
   imports: [
     BrowserModule,

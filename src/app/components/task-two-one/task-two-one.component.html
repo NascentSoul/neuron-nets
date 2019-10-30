@@ -14,7 +14,7 @@
   <button mat-stroked-button (click)="do()">Apply</button>
 </div>
 <p> 
-  y = {{ a ? a : 'a' }} * x + {{ b? b : 'b' }}
+  y = {{ a || a === 0 ? a : 'a' }} * x + {{ b? b : 'b' }}
 </p>
 <mat-form-field style="margin-top: 1rem;">
     <input matInput placeholder="Signal x" [(ngModel)]="signalX">

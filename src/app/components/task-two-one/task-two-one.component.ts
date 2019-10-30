@@ -34,7 +34,6 @@ export class TaskTwoOneComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
     this.neuron = new Neuron([Math.random(), Math.random()]);
-    this.signalX.as
   }
   
   ngAfterViewInit(): void {  
