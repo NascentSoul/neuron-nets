@@ -10,12 +10,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { ErrorCorrectionComponent } from './components/error-correction/error-correction.component';
+import { HemmingsAlgorithmComponent } from './components/hemmings-algorithm/hemmings-algorithm.component';
+import { AssociativeMemoryComponent } from './components/associative-memory/associative-memory.component';
+import { HopfieldNetComponent } from './components/hopfield-net/hopfield-net.component';
+import { PatternPipe } from './pipes/pattern.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     TaskTwoOneComponent,
-    ErrorCorrectionComponent
+    ErrorCorrectionComponent,
+    HemmingsAlgorithmComponent,
+    AssociativeMemoryComponent,
+    HopfieldNetComponent,
+    PatternPipe
   ],
   imports: [
     BrowserModule,
