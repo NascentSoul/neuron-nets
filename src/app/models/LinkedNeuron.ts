@@ -3,6 +3,7 @@ import { EventEmitter } from '@angular/core';
 export class LinkedNeuron {   
     public weights: Array<number>;
     private previousResult: number = 0;
+    public T: number = 0;
     private linkedNeurons: Array<LinkedNeuron>;
     private signals: Array<number>;
     public signalChanged: EventEmitter<Array<number>> = new EventEmitter<Array<number>>();
@@ -10,6 +11,17 @@ export class LinkedNeuron {
     constructor() { 
       this.signals = [];
       this.previousResult = 0;
+    }
+
+    public activationFn(x: number): number {
+      let F = 7.6;
+      if (x >= this.T && this.T > 0) {
+        return F;
+      } 
+      if (x >= 0 && x <= this.T) {
+        return (F * x) / this.T;
+      }
+      return 0;
     }
   
     setWeights(weights: Array<number>) {
@@ -54,6 +66,27 @@ export class LinkedNeuron {
         outputSignal += signals[i] * this.weights[i];
       }
       outputSignal = outputSignal >= 0 ? 1 : -1;
+      return outputSignal;
+    }
+  
+    recieveSignals1(signals: Array<number>): number
+    {
+      let outputSignal = 0;
+      for (let i = 0; i < this.weights.length; i++)
+      {
+        outputSignal += signals[i] * this.weights[i] + this.T;
+      }
+      return outputSignal;
+    }
+  
+    recieveSignals2(signals: Array<number>, ind: number): number
+    {
+      let outputSignal = 0;
+      for (let i = 0; i < this.weights.length; i++)
+      {
+        outputSignal += signals[i] * this.weights[i];
+      }
+      outputSignal = this.activationFn(signals[ind] - outputSignal);
       return outputSignal;
     }
 

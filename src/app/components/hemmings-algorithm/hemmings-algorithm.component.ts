@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { LinkedNeuron } from 'src/app/models/LinkedNeuron';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-hemmings-algorithm',
@@ -72,15 +74,122 @@ export class HemmingsAlgorithmComponent implements OnInit {
      .replace(/ /gi, ''),     
   ];
   
+  net: Array<Array<LinkedNeuron>>;
+  previousOutputs: Array<number>;
+  outputs: Array<number>;
+  weightsMatrix: string;
+  showRawMatrix: boolean;
+  count: number;
+  netShouldPause: EventEmitter<boolean> = new EventEmitter<boolean>();
+  subscriptions: Array<Subscription>;
+  displayString: string;
   constructor() { }
 
   ngOnInit() {
+    this.count = 0;
+    this.task2_8();
   }
 
-  generateMatrixFromString(str: string) {    
+  task2_8() {
+    const vector1 = this.generateVectorFromString(this.patterns['1']);
+    const vector2 = this.generateVectorFromString(this.patterns['2']);
+    const vector3 = this.generateVectorFromString(this.patterns['3']);
+    const vector4 = this.generateVectorFromString(this.patterns['4']);
+    // const vector = [1, -1, 1];
+    this.outputs = [];
+    this.previousOutputs = new Array(vector1.length).fill(0);
+    this.constructNet(4);
+    this.setWeights([vector1, vector2, vector3, vector4]);
+    // this.generateWeightMatrix();
+    this.applySignals(vector4);
+  }
+  // generateWeightMatrix() {
+  //   this.weightsMatrix = "";
+  //   for (const n of this.net) {
+  //     let str = "";
+  //     n.weights.forEach(el => el < 0 ? str += el : str += " " + el);
+  //     this.weightsMatrix += str + "\n";
+  //   }
+  // }
+
+  applySignals(vector: number[]) {
+    this.outputs = [];
+    for (let i = 0; i < this.net[0].length; i++) {
+      const neuron = this.net[0][i];
+      this.outputs.push(neuron.recieveSignals1(vector));
+    }
+    this.applySignals2(this.outputs);
+  }
+
+  applySignals2(vector: number[]) {
+    this.outputs = [];
+    for (let i = 0; i < this.net[1].length; i++) {
+      const neuron = this.net[1][i];
+      this.outputs.push(neuron.recieveSignals2(vector, i));
+    }
+    this.compareOutputs();
+  }
+
+  compareOutputs() {
+    this.count++;
+    if (this.count > 1000) {
+      return;
+    }
+    if (this.outputs.every((el, i) => el == this.previousOutputs[i])) {
+      this.displayString = this.generateStringFromVector(this.outputs);
+      return;
+    } else {
+      this.previousOutputs = this.outputs;
+      this.applySignals(this.previousOutputs);
+    }
+  }
+
+  constructNet(num: number) {
+    this.net = [[], []];
+    for (let i = 0; i < num; i++) {
+      const n = new LinkedNeuron();
+      n.activationFn = null;
+      this.net[0].push(n);
+      this.net[1].push(new LinkedNeuron());
+    }
+  }
+
+  setWeights(vectors: Array<Array<number>>) {
+    for (let i = 0; i < this.net[0].length; i++) {
+      const neuron = this.net[0][i];
+      neuron.T = vectors[i].length / 2;
+      let weights = [];
+      for (let j = 0; j < vectors[i].length; j++) {
+        const x_i = vectors[i][j];
+        weights.push(x_i * 0.5);        
+        // if (i == j) {
+        //   this.net[1][i].addToWeights([x_i * 0.5]);  
+        // } 
+      }
+      neuron.addToWeights(weights);
+    }
+    for (let i = 0; i < this.net[1].length; i++) {
+      const neuron = this.net[1][i];
+      let weights = [];
+      for (let j = 0; j < this.net[1].length; j++) {
+        if (i == j) {
+          weights.push(1);  
+        } else {
+          weights.push(0.24);
+        }
+      }
+      neuron.addToWeights(weights);
+    }
+  }
+
+  generateVectorFromString(str: string): Array<number> {    
     return str.replace(/\n/gi, '')
       .split('')
       .map(x => x == '-' ? -1 : 1);
+  }
+
+  generateStringFromVector(arr: Array<number>): string  {    
+    return arr.map(x => x == 1 ? 'o' : '-').join('');
   }
 
 }

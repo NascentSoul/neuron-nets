@@ -1,10 +1,9 @@
 <mat-toolbar>
-  <span>Neural networks</span>
+  <span class="layout">Neural networks </span>
+  <a class="layout" routerLink="/two-one" routerLinkActive="active"> 7 lab, 2-1</a>
+  <a class="layout" routerLink="/hopfield" routerLinkActive="active"> Hopfield's net</a>
+  <a class="layout" routerLink="/hemmings" routerLinkActive="active"> Hemming's net</a>
 </mat-toolbar>
 <div style="margin: 1rem;">
-  <!-- <task-two-one></task-two-one> -->
-  <!-- <app-hemmings-algorithm></app-hemmings-algorithm> -->
-  <!-- <app-associative-memory></app-associative-memory> -->
-  <app-hopfield-net></app-hopfield-net>
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>

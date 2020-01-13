@@ -51,10 +51,10 @@ export class HopfieldNetComponent implements OnInit {
 
   ngOnInit() {
     this.count = 0;
-    this.task2_2();
+    // this.task2_2();
     // this.task2_4();
     // this.task2_6();
-    // this.task2_8();
+    this.task2_8();
     // this.task2_9();
   }
   
@@ -128,11 +128,11 @@ export class HopfieldNetComponent implements OnInit {
     const vector2 = this.generateVectorFromString(this.patterns['2']);
     const vector3 = this.generateVectorFromString(`-------
                       ---o---
+                      ---o---
+                      ---oo--
                       --oo---
                       ---o---
-                      ---o---
-                      ---o---
-                      ---o---
+                      ---oo--
                       -ooooo-
                       -------`.replace(/ /gi, ''));
     this.outputs = [];

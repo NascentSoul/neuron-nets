@@ -14,6 +14,16 @@ import { HemmingsAlgorithmComponent } from './components/hemmings-algorithm/hemm
 import { AssociativeMemoryComponent } from './components/associative-memory/associative-memory.component';
 import { HopfieldNetComponent } from './components/hopfield-net/hopfield-net.component';
 import { PatternPipe } from './pipes/pattern.pipe';
+import { RouterModule, Routes } from '@angular/router';
+const appRoutes: Routes = [
+  { path: 'two-one', component: TaskTwoOneComponent },
+  { path: 'hopfield', component: HopfieldNetComponent },
+  { path: 'hemmings', component: HemmingsAlgorithmComponent },
+  { path: '',
+    redirectTo: '/hopfield',
+    pathMatch: 'full'
+  },
+];
 
 @NgModule({
   declarations: [
@@ -26,6 +36,10 @@ import { PatternPipe } from './pipes/pattern.pipe';
     PatternPipe
   ],
   imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      // { enableTracing: true } // <-- debugging purposes only
+    ),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
