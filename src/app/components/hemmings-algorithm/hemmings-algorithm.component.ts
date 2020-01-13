@@ -81,7 +81,8 @@ export class HemmingsAlgorithmComponent implements OnInit {
   showRawMatrix: boolean;
   count: number;
   netShouldPause: EventEmitter<boolean> = new EventEmitter<boolean>();
-  subscriptions: Array<Subscription>;
+  subscriptions: Array<Subscription>;  
+  winners: number[];
   displayString: string;
   constructor() { }
 
@@ -102,6 +103,7 @@ export class HemmingsAlgorithmComponent implements OnInit {
     this.setWeights([vector1, vector2, vector3, vector4]);
     // this.generateWeightMatrix();
     this.applySignals(vector4);
+    // this.applySignals(this.generateVectorFromString(this.distortedPatterns[2]));
   }
   // generateWeightMatrix() {
   //   this.weightsMatrix = "";
@@ -116,7 +118,7 @@ export class HemmingsAlgorithmComponent implements OnInit {
     this.outputs = [];
     for (let i = 0; i < this.net[0].length; i++) {
       const neuron = this.net[0][i];
-      this.outputs.push(neuron.recieveSignals1(vector));
+      this.outputs.push(neuron.recieveSignals3(vector));
     }
     this.applySignals2(this.outputs);
   }
@@ -125,7 +127,8 @@ export class HemmingsAlgorithmComponent implements OnInit {
     this.outputs = [];
     for (let i = 0; i < this.net[1].length; i++) {
       const neuron = this.net[1][i];
-      this.outputs.push(neuron.recieveSignals2(vector, i));
+      // this.outputs.push(neuron.recieveSignals2(vector, i));
+      this.outputs.push(neuron.recieveSignals3(vector));
     }
     this.compareOutputs();
   }
@@ -135,15 +138,11 @@ export class HemmingsAlgorithmComponent implements OnInit {
     if (this.count > 1000) {
       return;
     }
-    if (this.outputs.every((el, i) => el == this.previousOutputs[i])) {
-      this.displayString = this.generateStringFromVector(this.outputs);
-      return;
-    } else {
-      this.previousOutputs = this.outputs;
-      this.applySignals(this.previousOutputs);
-    }
+    const sorted = this.outputs.map((el, i) => [el, i]).sort((a, b) => b[0] - a[0]);
+    const first = sorted[0][0];
+    const maxElems = sorted.filter(el => el[0] == first);
+    this.winners = maxElems.map(el => el[1] + 1);
   }
-
   constructNet(num: number) {
     this.net = [[], []];
     for (let i = 0; i < num; i++) {
@@ -170,6 +169,7 @@ export class HemmingsAlgorithmComponent implements OnInit {
     }
     for (let i = 0; i < this.net[1].length; i++) {
       const neuron = this.net[1][i];
+      neuron.T = vectors[i].length / 2;
       let weights = [];
       for (let j = 0; j < this.net[1].length; j++) {
         if (i == j) {

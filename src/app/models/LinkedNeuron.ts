@@ -40,6 +40,28 @@ export class LinkedNeuron {
     setLinkedNeurons(neurons: Array<LinkedNeuron>) {
       this.linkedNeurons = neurons;
     }
+
+    public activationFn1(x: number): number {
+      if (x > this.T) {
+        return this.T;
+      } 
+      if (x >= 0 && x <= this.T) {
+        return x;
+      }
+      return 0;
+    }
+    
+    recieveSignals3(signals: Array<number>): number
+    {
+      let outputSignal = 0;
+      for (let i = 0; i < this.weights.length; i++)
+      {
+        outputSignal += signals[i] * this.weights[i];
+      }
+      outputSignal = this.activationFn1(outputSignal);
+      return outputSignal;
+    }
+
   
     recieveSignal(signal: number)
     {
